@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: nginx-frontend
+      annotations:
+        checksum/config: "version-2"    # ← change this every time you update configmap
     spec:
       containers:
       - name: nginx-frontend
