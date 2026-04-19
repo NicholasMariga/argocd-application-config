@@ -10,30 +10,313 @@ data:
       <head>
         <title>Mariga 3-Tier App</title>
         <style>
-          body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; background: #f0f0f0; }
-          h1 { color: #2c3e50; }
-          .tier { background: white; margin: 10px auto; padding: 15px; width: 400px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-          button { background: #2c3e50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
-          #response { margin-top: 20px; color: green; font-weight: bold; }
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: white;
+            padding: 20px;
+          }
+
+          /* Animated Background */
+          @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+
+          /* Floating particles */
+          .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+          }
+
+          .particle {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            animation: float linear infinite;
+          }
+
+          @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+          }
+
+          /* Main content */
+          .container {
+            position: relative;
+            z-index: 1;
+          }
+
+          h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: pulse 3s ease-in-out infinite;
+          }
+
+          @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            50% { text-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 60px #a78bfa; }
+          }
+
+          /* Clock */
+          .clock {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #a78bfa;
+            margin: 10px 0;
+            letter-spacing: 3px;
+          }
+
+          .date {
+            font-size: 0.95em;
+            color: #c4b5fd;
+            margin-bottom: 25px;
+          }
+
+          /* Tier Cards */
+          .tiers {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+          }
+
+          .tier {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px 30px;
+            border-radius: 16px;
+            width: 180px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .tier:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(167,139,250,0.3);
+            border-color: #a78bfa;
+            box-shadow: 0 20px 40px rgba(167,139,250,0.3);
+          }
+
+          .tier::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+          }
+
+          .tier:hover::before { opacity: 1; }
+
+          .tier-icon { font-size: 2em; margin-bottom: 8px; }
+          .tier-name { font-size: 0.85em; color: #c4b5fd; margin-top: 5px; }
+
+          /* Visitor Counter */
+          .counter {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 15px 30px;
+            margin-bottom: 25px;
+            display: inline-block;
+          }
+
+          .counter-label {
+            font-size: 0.85em;
+            color: #c4b5fd;
+            margin-bottom: 5px;
+          }
+
+          .counter-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #a78bfa;
+            animation: countUp 0.5s ease;
+          }
+
+          @keyframes countUp {
+            from { transform: scale(1.3); color: white; }
+            to { transform: scale(1); color: #a78bfa; }
+          }
+
+          /* Backend Test Button */
+          .btn {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(167,139,250,0.4);
+          }
+
+          .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(167,139,250,0.6);
+          }
+
+          .btn:active { transform: translateY(0); }
+
+          #response {
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            display: inline-block;
+            min-width: 300px;
+            font-size: 0.95em;
+            color: #a78bfa;
+            min-height: 20px;
+          }
+
+          .status-ok { color: #34d399; }
+          .status-err { color: #f87171; }
         </style>
       </head>
       <body>
-        <h1>Hello Mariga, K8s is fun with ArgoCD</h1>
-        <div class="tier">Frontend: Nginx</div>
-        <div class="tier">Backend: Python/Flask</div>
-        <div class="tier">Database: PostgreSQL</div>
-        <br>
-        <button onclick="callBackend()">Test Backend Connection</button>
-        <div id="response"></div>
+
+        <!-- Animated particles -->
+        <div class="particles" id="particles"></div>
+
+        <div class="container">
+          <!-- Title -->
+          <h1>👋 Hello Mariga!</h1>
+          <p style="color:#c4b5fd; margin-bottom:10px;">K8s is fun with ArgoCD 🚀</p>
+
+          <!-- Live Clock -->
+          <div class="clock" id="clock">00:00:00</div>
+          <div class="date" id="date"></div>
+
+          <!-- Tier Cards -->
+          <div class="tiers">
+            <div class="tier" onclick="testBackend()">
+              <div class="tier-icon">⚡</div>
+              <strong>Frontend</strong>
+              <div class="tier-name">Nginx</div>
+            </div>
+            <div class="tier" onclick="testBackend()">
+              <div class="tier-icon">🐍</div>
+              <strong>Backend</strong>
+              <div class="tier-name">Python/Flask</div>
+            </div>
+            <div class="tier" onclick="testDB()">
+              <div class="tier-icon">🐘</div>
+              <strong>Database</strong>
+              <div class="tier-name">PostgreSQL</div>
+            </div>
+          </div>
+
+          <!-- Visitor Counter -->
+          <div class="counter">
+            <div class="counter-label">👥 Visitors This Session</div>
+            <div class="counter-number" id="visitor-count">0</div>
+          </div>
+
+          <br>
+
+          <!-- Buttons -->
+          <button class="btn" onclick="testBackend()">🐍 Test Backend</button>
+          <button class="btn" onclick="testDB()">🐘 Test Database</button>
+
+          <!-- Response -->
+          <div id="response"></div>
+        </div>
+
         <script>
-          function callBackend() {
+          // ── Live Clock ──
+          function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent =
+              now.toLocaleTimeString('en-US', { hour12: false });
+            document.getElementById('date').textContent =
+              now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+          }
+          setInterval(updateClock, 1000);
+          updateClock();
+
+          // ── Visitor Counter ──
+          let visits = parseInt(localStorage.getItem('mariga_visits') || '0') + 1;
+          localStorage.setItem('mariga_visits', visits);
+          let count = 0;
+          const target = visits;
+          const interval = setInterval(() => {
+            count++;
+            document.getElementById('visitor-count').textContent = count;
+            if (count >= target) clearInterval(interval);
+          }, 50);
+
+          // ── Floating Particles ──
+          const container = document.getElementById('particles');
+          for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
+            p.style.background = ['rgba(167,139,250,0.5)', 'rgba(196,181,253,0.4)', 'rgba(255,255,255,0.3)'][Math.floor(Math.random()*3)];
+            container.appendChild(p);
+          }
+
+          // ── Backend Test ──
+          function testBackend() {
+            const r = document.getElementById('response');
+            r.className = '';
+            r.textContent = 'Connecting to Flask...';
             fetch('/api/health')
               .then(res => res.json())
               .then(data => {
-                document.getElementById('response').innerText = data.message;
+                r.className = 'status-ok';
+                r.textContent = '✅ ' + data.message;
               })
               .catch(() => {
-                document.getElementById('response').innerText = 'Backend not reachable';
+                r.className = 'status-err';
+                r.textContent = '❌ Backend not reachable';
+              });
+          }
+
+          // ── DB Test ──
+          function testDB() {
+            const r = document.getElementById('response');
+            r.className = '';
+            r.textContent = 'Connecting to PostgreSQL...';
+            fetch('/api/db')
+              .then(res => res.json())
+              .then(data => {
+                r.className = data.status === 'connected' ? 'status-ok' : 'status-err';
+                r.textContent = (data.status === 'connected' ? '✅ ' : '❌ ') + data.message;
+              })
+              .catch(() => {
+                r.className = 'status-err';
+                r.textContent = '❌ Database not reachable';
               });
           }
         </script>
@@ -48,7 +331,7 @@ data:
         index index.html;
       }
       location /api/ {
-        proxy_pass http://flask-service:5000/;   # ← proxies API calls to Flask
+        proxy_pass http://flask-service:5000/;
         proxy_set_header Host $host;
       }
     }
