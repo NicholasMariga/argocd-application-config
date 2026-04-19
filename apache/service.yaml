@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-myapp-service
+  namespace: apache-myapp
+spec:
+  selector:
+    app: apache-myapp
+  ports:
+  - protocol: TCP
+    port: 9090
+    targetPort: 80
+  type: NodePort
