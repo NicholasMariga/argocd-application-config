@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-app-config
+  namespace: 3tier
+data:
+  app.py: |
+    from flask import Flask, jsonify
+    import psycopg2
+    import os
+
+    app = Flask(__name__)
+
+    def get_db_connection():
+      conn = psycopg2.connect(
+        host=os.environ.get('POSTGRES_HOST'),
+        database=os.environ.get('POSTGRES_DB'),
+        user=os.environ.get('POSTGRES_USER'),
+        password=os.environ.get('POSTGRES_PASSWORD')
+      )
+      return conn
+
+    @app.route('/health')
+    def health():
+      return jsonify({
+        "message": "Hello Mariga! Flask backend is running 🐍",
+        "status": "healthy"
+      })
+
+    @app.route('/db')
+    def db_check():
+      try:
+        conn = get_db_connection()
+        conn.close()
+        return jsonify({
+          "message": "PostgreSQL connection successful 🐘",
+          "status": "connected"
+        })
+      except Exception as e:
+        return jsonify({
+          "message": f"DB connection failed: {str(e)}",
+          "status": "error"
+        }), 500
+
+    if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=5000)
