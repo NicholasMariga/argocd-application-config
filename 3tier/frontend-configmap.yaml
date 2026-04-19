@@ -18,10 +18,10 @@ data:
         </style>
       </head>
       <body>
-        <h1>Hello Mariga, K8s is fun with ArgoCD 🚀</h1>
-        <div class="tier">⚡ Frontend: Nginx</div>
-        <div class="tier">🐍 Backend: Python/Flask</div>
-        <div class="tier">🐘 Database: PostgreSQL</div>
+        <h1>Hello Mariga, K8s is fun with ArgoCD</h1>
+        <div class="tier">Frontend: Nginx</div>
+        <div class="tier">Backend: Python/Flask</div>
+        <div class="tier">Database: PostgreSQL</div>
         <br>
         <button onclick="callBackend()">Test Backend Connection</button>
         <div id="response"></div>
