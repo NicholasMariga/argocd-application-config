@@ -9,6 +9,7 @@ data:
     <html>
       <head>
         <title>Mariga 3-Tier App</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -27,14 +28,12 @@ data:
             padding: 20px;
           }
 
-          /* Animated Background */
           @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
           }
 
-          /* Floating particles */
           .particles {
             position: fixed;
             top: 0; left: 0;
@@ -45,9 +44,7 @@ data:
 
           .particle {
             position: absolute;
-            width: 6px; height: 6px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
             animation: float linear infinite;
           }
 
@@ -58,25 +55,29 @@ data:
             100% { transform: translateY(-100px) scale(1); opacity: 0; }
           }
 
-          /* Main content */
           .container {
             position: relative;
             z-index: 1;
+            width: 100%;
+            max-width: 600px;
           }
 
           h1 {
             font-size: 2.2em;
             margin-bottom: 5px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
             animation: pulse 3s ease-in-out infinite;
           }
+
+          h1 i { margin-right: 10px; color: #a78bfa; }
 
           @keyframes pulse {
             0%, 100% { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
             50% { text-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 60px #a78bfa; }
           }
 
-          /* Clock */
+          .subtitle { color: #c4b5fd; margin-bottom: 10px; }
+          .subtitle i { margin-left: 5px; color: #a78bfa; }
+
           .clock {
             font-size: 1.5em;
             font-weight: bold;
@@ -91,7 +92,6 @@ data:
             margin-bottom: 25px;
           }
 
-          /* Tier Cards */
           .tiers {
             display: flex;
             gap: 20px;
@@ -106,7 +106,7 @@ data:
             border: 1px solid rgba(255,255,255,0.2);
             padding: 20px 30px;
             border-radius: 16px;
-            width: 180px;
+            width: 160px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
@@ -132,10 +132,14 @@ data:
 
           .tier:hover::before { opacity: 1; }
 
-          .tier-icon { font-size: 2em; margin-bottom: 8px; }
+          .tier-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #a78bfa;
+          }
+
           .tier-name { font-size: 0.85em; color: #c4b5fd; margin-top: 5px; }
 
-          /* Visitor Counter */
           .counter {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
@@ -152,6 +156,8 @@ data:
             margin-bottom: 5px;
           }
 
+          .counter-label i { margin-right: 5px; }
+
           .counter-number {
             font-size: 2em;
             font-weight: bold;
@@ -164,7 +170,56 @@ data:
             to { transform: scale(1); color: #a78bfa; }
           }
 
-          /* Backend Test Button */
+          .sysinfo {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            width: 100%;
+            text-align: left;
+          }
+
+          .sysinfo-title {
+            font-size: 0.9em;
+            color: #a78bfa;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+          }
+
+          .sysinfo-title i { margin-right: 8px; }
+
+          .sysinfo-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.88em;
+          }
+
+          .sysinfo-row:last-child { border-bottom: none; }
+          .sysinfo-label { color: #c4b5fd; }
+          .sysinfo-value { color: white; font-weight: bold; }
+          .sysinfo-value i { margin-right: 5px; }
+
+          .status-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            margin-right: 6px;
+            animation: blink 2s infinite;
+          }
+
+          @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+          }
+
           .btn {
             background: linear-gradient(135deg, #a78bfa, #7c3aed);
             color: white;
@@ -177,6 +232,8 @@ data:
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(167,139,250,0.4);
           }
+
+          .btn i { margin-right: 8px; }
 
           .btn:hover {
             transform: translateY(-3px);
@@ -197,19 +254,108 @@ data:
             min-height: 20px;
           }
 
+          #response i { margin-right: 6px; }
           .status-ok { color: #34d399; }
           .status-err { color: #f87171; }
+
+          /* Dark/Light Toggle */
+          .toggle-wrap {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          .toggle-label { font-size: 0.85em; color: #c4b5fd; }
+          .toggle-label i { margin-right: 4px; }
+
+          .toggle {
+            width: 50px; height: 26px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+          }
+
+          .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px; left: 3px;
+            transition: transform 0.3s;
+          }
+
+          .toggle.light::after {
+            transform: translateX(24px);
+            background: #7c3aed;
+          }
+
+          /* Light Mode */
+          body.light-mode {
+            background: linear-gradient(-45deg, #f0e6ff, #e9d5ff, #ddd6fe, #ede9fe);
+            background-size: 400% 400%;
+            color: #1a1a2e;
+          }
+
+          body.light-mode h1 { color: #4c1d95; text-shadow: none; }
+          body.light-mode .subtitle { color: #6d28d9; }
+          body.light-mode .clock { color: #7c3aed; }
+          body.light-mode .date { color: #6d28d9; }
+          body.light-mode .toggle-label { color: #6d28d9; }
+          body.light-mode .tier {
+            background: rgba(124,58,237,0.1);
+            border-color: rgba(124,58,237,0.3);
+            color: #1a1a2e;
+          }
+          body.light-mode .tier-name { color: #6d28d9; }
+          body.light-mode .tier-icon { color: #7c3aed; }
+          body.light-mode .tier:hover {
+            background: rgba(124,58,237,0.2);
+            box-shadow: 0 20px 40px rgba(124,58,237,0.2);
+          }
+          body.light-mode .counter {
+            background: rgba(124,58,237,0.1);
+            border-color: rgba(124,58,237,0.3);
+          }
+          body.light-mode .counter-label { color: #6d28d9; }
+          body.light-mode .sysinfo {
+            background: rgba(124,58,237,0.1);
+            border-color: rgba(124,58,237,0.3);
+          }
+          body.light-mode .sysinfo-title { color: #4c1d95; }
+          body.light-mode .sysinfo-row { border-color: rgba(124,58,237,0.15); }
+          body.light-mode .sysinfo-label { color: #6d28d9; }
+          body.light-mode .sysinfo-value { color: #1a1a2e; }
+          body.light-mode #response {
+            background: rgba(124,58,237,0.1);
+            color: #4c1d95;
+          }
         </style>
       </head>
       <body>
 
-        <!-- Animated particles -->
+        <!-- Dark/Light Toggle -->
+        <div class="toggle-wrap">
+          <span class="toggle-label" id="mode-label">
+            <i class="fa-solid fa-moon"></i> Dark
+          </span>
+          <div class="toggle" id="toggle" onclick="toggleMode()"></div>
+        </div>
+
+        <!-- Animated Particles -->
         <div class="particles" id="particles"></div>
 
         <div class="container">
+
           <!-- Title -->
-          <h1>👋 Hello Mariga!</h1>
-          <p style="color:#c4b5fd; margin-bottom:10px;">K8s is fun with ArgoCD 🚀</p>
+          <h1><i class="fa-solid fa-hand-wave"></i> Hello Mariga!</h1>
+          <p class="subtitle">K8s is fun with ArgoCD <i class="fa-solid fa-rocket"></i></p>
 
           <!-- Live Clock -->
           <div class="clock" id="clock">00:00:00</div>
@@ -218,17 +364,17 @@ data:
           <!-- Tier Cards -->
           <div class="tiers">
             <div class="tier" onclick="testBackend()">
-              <div class="tier-icon">⚡</div>
+              <div class="tier-icon"><i class="fa-solid fa-bolt"></i></div>
               <strong>Frontend</strong>
               <div class="tier-name">Nginx</div>
             </div>
             <div class="tier" onclick="testBackend()">
-              <div class="tier-icon">🐍</div>
+              <div class="tier-icon"><i class="fa-solid fa-flask"></i></div>
               <strong>Backend</strong>
               <div class="tier-name">Python/Flask</div>
             </div>
             <div class="tier" onclick="testDB()">
-              <div class="tier-icon">🐘</div>
+              <div class="tier-icon"><i class="fa-solid fa-database"></i></div>
               <strong>Database</strong>
               <div class="tier-name">PostgreSQL</div>
             </div>
@@ -236,18 +382,78 @@ data:
 
           <!-- Visitor Counter -->
           <div class="counter">
-            <div class="counter-label">👥 Visitors This Session</div>
+            <div class="counter-label">
+              <i class="fa-solid fa-users"></i> Visitors This Session
+            </div>
             <div class="counter-number" id="visitor-count">0</div>
           </div>
 
-          <br>
+          <!-- System Info Dashboard -->
+          <div class="sysinfo">
+            <div class="sysinfo-title">
+              <i class="fa-solid fa-chart-bar"></i> System Info
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Status</span>
+              <span class="sysinfo-value">
+                <span class="status-dot"></span>Running
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">App</span>
+              <span class="sysinfo-value">Mariga 3-Tier App</span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Namespace</span>
+              <span class="sysinfo-value">3tier</span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Frontend</span>
+              <span class="sysinfo-value">
+                <i class="fa-solid fa-bolt"></i> Nginx 1.21
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Backend</span>
+              <span class="sysinfo-value">
+                <i class="fa-solid fa-flask"></i> Python/Flask
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Database</span>
+              <span class="sysinfo-value">
+                <i class="fa-solid fa-database"></i> PostgreSQL 15
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Orchestration</span>
+              <span class="sysinfo-value">
+                <i class="fa-solid fa-dharmachakra"></i> Kubernetes (Minikube)
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">GitOps Tool</span>
+              <span class="sysinfo-value">
+                <i class="fa-solid fa-circle-check" style="color:#34d399"></i> ArgoCD
+              </span>
+            </div>
+            <div class="sysinfo-row">
+              <span class="sysinfo-label">Uptime</span>
+              <span class="sysinfo-value" id="uptime">0s</span>
+            </div>
+          </div>
 
           <!-- Buttons -->
-          <button class="btn" onclick="testBackend()">🐍 Test Backend</button>
-          <button class="btn" onclick="testDB()">🐘 Test Database</button>
+          <button class="btn" onclick="testBackend()">
+            <i class="fa-solid fa-flask"></i> Test Backend
+          </button>
+          <button class="btn" onclick="testDB()">
+            <i class="fa-solid fa-database"></i> Test Database
+          </button>
 
           <!-- Response -->
           <div id="response"></div>
+
         </div>
 
         <script>
@@ -266,11 +472,10 @@ data:
           let visits = parseInt(localStorage.getItem('mariga_visits') || '0') + 1;
           localStorage.setItem('mariga_visits', visits);
           let count = 0;
-          const target = visits;
           const interval = setInterval(() => {
             count++;
             document.getElementById('visitor-count').textContent = count;
-            if (count >= target) clearInterval(interval);
+            if (count >= visits) clearInterval(interval);
           }, 50);
 
           // ── Floating Particles ──
@@ -281,25 +486,57 @@ data:
             p.style.left = Math.random() * 100 + '%';
             p.style.animationDuration = (Math.random() * 10 + 8) + 's';
             p.style.animationDelay = (Math.random() * 10) + 's';
-            p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
-            p.style.background = ['rgba(167,139,250,0.5)', 'rgba(196,181,253,0.4)', 'rgba(255,255,255,0.3)'][Math.floor(Math.random()*3)];
+            const size = (Math.random() * 6 + 3) + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            p.style.background = [
+              'rgba(167,139,250,0.5)',
+              'rgba(196,181,253,0.4)',
+              'rgba(255,255,255,0.3)'
+            ][Math.floor(Math.random() * 3)];
             container.appendChild(p);
           }
+
+          // ── Dark/Light Mode Toggle ──
+          let isLight = false;
+          function toggleMode() {
+            isLight = !isLight;
+            document.body.classList.toggle('light-mode', isLight);
+            document.getElementById('toggle').classList.toggle('light', isLight);
+            document.getElementById('mode-label').innerHTML = isLight
+              ? '<i class="fa-solid fa-sun"></i> Light'
+              : '<i class="fa-solid fa-moon"></i> Dark';
+            localStorage.setItem('mariga_theme', isLight ? 'light' : 'dark');
+          }
+
+          // Restore saved theme
+          if (localStorage.getItem('mariga_theme') === 'light') toggleMode();
+
+          // ── Uptime Counter ──
+          let seconds = 0;
+          setInterval(() => {
+            seconds++;
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            document.getElementById('uptime').textContent =
+              h > 0 ? `${h}h ${m}m ${s}s` : m > 0 ? `${m}m ${s}s` : `${s}s`;
+          }, 1000);
 
           // ── Backend Test ──
           function testBackend() {
             const r = document.getElementById('response');
             r.className = '';
-            r.textContent = 'Connecting to Flask...';
+            r.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting to Flask...';
             fetch('/api/health')
               .then(res => res.json())
               .then(data => {
                 r.className = 'status-ok';
-                r.textContent = '✅ ' + data.message;
+                r.innerHTML = '<i class="fa-solid fa-circle-check"></i> ' + data.message;
               })
               .catch(() => {
                 r.className = 'status-err';
-                r.textContent = '❌ Backend not reachable';
+                r.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Backend not reachable';
               });
           }
 
@@ -307,16 +544,18 @@ data:
           function testDB() {
             const r = document.getElementById('response');
             r.className = '';
-            r.textContent = 'Connecting to PostgreSQL...';
+            r.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting to PostgreSQL...';
             fetch('/api/db')
               .then(res => res.json())
               .then(data => {
                 r.className = data.status === 'connected' ? 'status-ok' : 'status-err';
-                r.textContent = (data.status === 'connected' ? '✅ ' : '❌ ') + data.message;
+                r.innerHTML = data.status === 'connected'
+                  ? '<i class="fa-solid fa-circle-check"></i> ' + data.message
+                  : '<i class="fa-solid fa-circle-xmark"></i> ' + data.message;
               })
               .catch(() => {
                 r.className = 'status-err';
-                r.textContent = '❌ Database not reachable';
+                r.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Database not reachable';
               });
           }
         </script>
