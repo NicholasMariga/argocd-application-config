@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-html
+  namespace: apache-myapp
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head><title>Apache - ArgoCD</title></head>
+      <body>
+        <h1>Hello Mariga, K8s is fun with ArgoCD 🚀</h1>
+        <p>Served by: Apache</p>
+      </body>
+    </html>

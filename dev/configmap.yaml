@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+  namespace: myapp
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head><title>Nginx - ArgoCD</title></head>
+      <body>
+        <h1>Hello Mariga, K8s is fun with ArgoCD </h1>
+        <p>Served by: Nginx</p>
+      </body>
+    </html>

@@ -15,6 +15,13 @@ spec:
     spec:
       containers:
       - name: apache-myapp
-        image: httpd:2.4          # ← official Apache image on Docker Hub
+        image: httpd:2.4        
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/local/apache2/htdocs/    
+      volumes:
+      - name: html-volume
+        configMap:
+          name: apache-html                    
